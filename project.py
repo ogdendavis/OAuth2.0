@@ -29,8 +29,8 @@ def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
     # Set the 'random' string to the state property of our login session
     login_session['state'] = state
-    # For now, just confirm this worked by printing the login_session state
-    return "The current session state is {}".format(login_session['state'])
+    # Render login template
+    return render_template('login.html')
 
 #JSON APIs to view Restaurant Information
 @app.route('/restaurant/<int:restaurant_id>/menu/JSON')

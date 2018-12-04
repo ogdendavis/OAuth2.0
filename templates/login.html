@@ -1,0 +1,27 @@
+<html>
+<head>
+  <!-- Import jQuery for Google sign-in -->
+  <script src = "//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <!-- Google sign-in script -->
+  <script src = "https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+</head>
+
+<body>
+  <div id = "signinButton">
+    <!-- Span holds data for OAuth via Google -->
+    <!-- clientid is from Restaurant Menu App project in my Google Dev dashboard -->
+    <!-- approvalprompt forces login every time user comes to login screen. Useful for development & debugging, but would suck for a user, so remove when project is complete -->
+    <span class = "g-signin"
+      data-scope = "openid"
+      data-clientid = "321996303119-oc3ag7jggmdamvimcut8rrlnefnsajat.apps.googleusercontent.com"
+      data-redirecturi = "postmessage"
+      data-accesstype = "offline"
+      data-cookiepolicy = "single_host_origin"
+      data-callback = "signInCallback"
+      data-approvalprompt = "force">
+    </span>
+  </div>
+  <div id = "result"></div>
+
+</body>
+</html>
