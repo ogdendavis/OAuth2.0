@@ -26,10 +26,11 @@
   <!-- Callback function for when user logs in, as specified in g-signin span above -->
   <script>
     function signinCallback(authResult) {
-      console.log('entering signinCallback')
-      console.log(authResult)
+      if (authResult['error'] = 'popup_closed_by_user') {
+        $(result).html('<p>There was an error!</p><p>The most likely cause is a popup blocker or other ad-blocking software.<br><b>Please disable any content-blockers in your browser and try again.</b></p><p>Check console for error information</p>')
+        console.log(authResult)
+      }
       if (authResult['code']) {
-        console.lg('entering "if"')
         // We're using jQuery! If the result has an authorization code, we know
         // that sign-in was successful
         // Hide sign-in button
@@ -63,7 +64,6 @@
             }
           }
         });
-        console.log("AJAX sent")
       }
     }
   </script>
