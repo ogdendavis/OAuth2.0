@@ -12,16 +12,61 @@
     <!-- clientid is from Restaurant Menu App project in my Google Dev dashboard -->
     <!-- approvalprompt forces login every time user comes to login screen. Useful for development & debugging, but would suck for a user, so remove when project is complete -->
     <span class = "g-signin"
-      data-scope = "openid"
+      data-scope = "openid email"
       data-clientid = "321996303119-oc3ag7jggmdamvimcut8rrlnefnsajat.apps.googleusercontent.com"
       data-redirecturi = "postmessage"
       data-accesstype = "offline"
       data-cookiepolicy = "single_host_origin"
-      data-callback = "signInCallback"
+      data-callback = "signinCallback"
       data-approvalprompt = "force">
     </span>
   </div>
   <div id = "result"></div>
+
+  <!-- Callback function for when user logs in, as specified in g-signin span above -->
+  <script>
+    function signinCallback(authResult) {
+      console.log('entering signinCallback')
+      console.log(authResult)
+      if (authResult['code']) {
+        console.lg('entering "if"')
+        // We're using jQuery! If the result has an authorization code, we know
+        // that sign-in was successful
+        // Hide sign-in button
+        $('#signinButton').attr('style', 'display: none');
+        // Send the code to the server by creating an ajax request
+        // The URL is one we'll create a path for in project.py. State was
+        // generated when login page was created. Success is the function
+        // to execute if/when the server sends a successful HTTP response to
+        // the POST request
+        $.ajax({
+          type: 'POST',
+          url:'/gconnect?state={{STATE}}',
+          processData: false,
+          contentType: 'application/octet-stream; charset=utf-8',
+          data: authResult['code'],
+          success: function(result) {
+            if (result) {
+              // If we get a result, display a success message and then redirect to restaurant list
+              $('#result').html('Login Successful!<br>' + result + '<br>Redirecting...')
+              setTimeout(function() {
+                window.location.href = '/restaurant';
+              }, 4000);
+            }
+            else if (authResult['error']) {
+              // If there's an error, log it to the console
+              console.log('There was an error: ' + authResult['error']);
+            }
+            else {
+              // If there's not success or an error response, something went wrong with the request
+              $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+            }
+          }
+        });
+        console.log("AJAX sent")
+      }
+    }
+  </script>
 
 </body>
 </html>
