@@ -165,6 +165,17 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
+    # Check if the user is already in our database. If not, add them! If so,
+    # attach their user id to the login session
+    if getUserId(login_session['email']) == None:
+        # createUser is a helper function defined above, and it returns the
+        # user id created by the database
+        login_session['user_id'] = createUser(login_session)
+    else:
+        # If the user exists, attach the existing user id to the login session
+        login_session['user_id'] = getUserId(login_session['email'])
+
+
     output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
